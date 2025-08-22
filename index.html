@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" class="dark"> <!-- Start in dark mode to match the splash screen -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookDB - Your Next Great Read</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables for Theming */
+        :root {
+            --bg-primary: #f3f4f6; /* Light: A very light gray */
+            --bg-secondary: #FFFFFF; /* Light: white */
+            --bg-header: #FFFFFF;
+            --text-primary: #1F2937; /* Light: gray-800 */
+            --text-secondary: #6B7280; /* Light: gray-500 */
+            --border-color: #E5E7EB; /* Light: gray-200 */
+            --highlight-color: #3B82F6; /* Light: blue-500 */
+            --btn-primary-bg: #3B82F6;
+            --btn-primary-hover-bg: #2563EB;
+            --btn-secondary-bg: #E5E7EB;
+            --btn-secondary-hover-bg: #D1D5DB;
+            --btn-secondary-text: #374151;
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* Modern shadow */
+        }
+
+        .dark {
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --bg-header: #161a24;
+            --text-primary: #E5E7EB; /* Dark: gray-200 */
+            --text-secondary: #a0aec0;
+            --border-color: #4a5568;
+            --highlight-color: #63b3ed;
+            --btn-primary-bg: #4299e1;
+            --btn-primary-hover-bg: #3182ce;
+            --btn-secondary-bg: #4a5568;
+            --btn-secondary-hover-bg: #2d3748;
+            --btn-secondary-text: #E5E7EB;
+            --card-shadow: none; /* No shadow in dark mode */
+        }
+
+        /* Applying Variables */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-secondary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+        .header {
+            background-color: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .text-main { color: var(--text-primary); }
+        .text-subtle { color: var(--text-secondary); }
+        .btn-primary {
+            background-color: var(--btn-primary-bg);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover { background-color: var(--btn-primary-hover-bg); }
+        .btn-secondary {
+            background-color: var(--btn-secondary-bg);
+            color: var(--btn-secondary-text);
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover { background-color: var(--btn-secondary-hover-bg); }
+        .featured-highlight { color: var(--highlight-color); }
+        .carousel-btn { background-color: rgba(45, 55, 72, 0.8); }
+        .carousel-item {
+            display: none;
+            transition: opacity 1s ease-in-out;
+        }
+        .carousel-item.active {
+            display: block;
+        }
+        
+        /* Splash Screen Styles */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1a202c;
+            transition: opacity 0.5s ease-out;
+        }
+        .glass-pane {
+            background: rgba(45, 55, 72, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 4rem 6rem;
+            animation: fadeInScale 1s ease-out forwards; /* New animation */
+        }
+        .splash-title {
+             animation: pulseGlow 2.5s infinite ease-in-out; /* New animation */
+        }
+        #main-content {
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+        }
+        
+        /* Animations */
+        .book-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
+
+        /* New Splash Screen Animations */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        @keyframes pulseGlow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(99, 179, 237, 0.5);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(99, 179, 237, 1);
+            }
+        }
+
+    </style>
+    <script>
+        // This script must be in the <head> to prevent a flash of unstyled content (FOUC).
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+<body class="text-sm">
+
+    <!-- Cover Page / Splash Screen -->
+    <div id="splash-screen">
+        <div class="glass-pane">
+            <h1 class="splash-title text-5xl font-bold text-white flex items-center gap-4">
+                <svg class="w-12 h-12 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18"></path></svg>
+                BookDB
+            </h1>
+        </div>
+    </div>
+
+    <!-- Main Content (Initially Hidden) -->
+    <div id="main-content">
+        <!-- Header -->
+        <header class="header shadow-md sticky top-0 z-50">
+            <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-14">
+                    <div class="flex items-center space-x-4">
+                        <a href="#" class="text-lg font-bold flex items-center gap-2 text-main">
+                            <svg class="w-7 h-7 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18"></path></svg>
+                            <span class="font-semibold text-base">BookDB</span>
+                        </a>
+                        <div class="hidden md:flex items-center space-x-3 pl-4">
+                            <a href="allbooks.html" class="text-subtle hover:text-main px-2 py-1 rounded-md text-xs font-medium">All Books</a>
+                            <a href="contact.html" class="text-subtle hover:text-main px-2 py-1 rounded-md text-xs font-medium">Contact</a>
+                            <a href="community.html" class="text-subtle hover:text-main px-2 py-1 rounded-md text-xs font-medium">Community</a>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button id="theme-toggle" type="button" class="text-subtle hover:text-main p-1.5 rounded-md">
+                            <svg id="theme-toggle-dark-icon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                            <svg id="theme-toggle-light-icon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1z"></path></svg>
+                        </button>
+                        <a href="login.html?action=signin" class="text-subtle hover:text-main px-2 py-1 rounded-md text-xs font-medium">Sign In</a>
+                        <a href="login.html?action=signup" class="btn-primary px-3 py-1 rounded-md text-xs font-medium">Sign Up</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Search Bar -->
+            <section class="mb-8 flex justify-center">
+                <div class="relative w-full max-w-lg">
+                    <input type="text" placeholder="Search for books, authors, and more..." class="card text-main placeholder-gray-400 text-xs rounded-full py-2.5 px-5 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <svg class="w-4 h-4 absolute right-5 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+            </section>
+
+            <!-- Carousel -->
+            <section class="mb-12 fade-in-up">
+                <div class="relative w-full max-w-6xl mx-auto">
+                    <div id="carousel" class="relative rounded-lg overflow-hidden card shadow-lg">
+                        <!-- Carousel Item 1 -->
+                        <div class="carousel-item active p-8 md:p-12">
+                            <div class="flex flex-col md:flex-row items-center gap-8">
+                                <div class="md:w-2/3 text-center md:text-left">
+                                    <h2 class="text-2xl md:text-3xl font-bold text-main">The Midnight Library</h2>
+                                    <p class="mt-3 text-xs text-subtle">Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived.</p>
+                                    <div class="mt-6 flex justify-center md:justify-start space-x-3">
+                                        <button class="btn-primary text-white text-xs font-semibold px-4 py-2 rounded-md">Read Reviews</button>
+                                        <button class="btn-secondary text-xs font-semibold px-4 py-2 rounded-md">Add to List</button>
+                                    </div>
+                                </div>
+                                <div class="md:w-1/3 flex justify-center">
+                                    <div class="w-32 h-48 bg-indigo-500 rounded-lg flex items-center justify-center shadow-2xl book-card">
+                                        <svg class="w-12 h-12 text-indigo-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Carousel Item 2 -->
+                        <div class="carousel-item p-8 md:p-12">
+                             <div class="flex flex-col md:flex-row items-center gap-8">
+                                <div class="md:w-2/3 text-center md:text-left">
+                                    <h2 class="text-2xl md:text-3xl font-bold text-main">Where the Crawdads Sing</h2>
+                                    <p class="mt-3 text-xs text-subtle">A mysterious and haunting coming-of-age story about a young girl raised by the marshlands of North Carolina.</p>
+                                    <div class="mt-6 flex justify-center md:justify-start space-x-3">
+                                        <button class="btn-primary text-white text-xs font-semibold px-4 py-2 rounded-md">Read Reviews</button>
+                                        <button class="btn-secondary text-xs font-semibold px-4 py-2 rounded-md">Add to List</button>
+                                    </div>
+                                </div>
+                                <div class="md:w-1/3 flex justify-center">
+                                    <div class="w-32 h-48 bg-teal-500 rounded-lg flex items-center justify-center shadow-2xl book-card">
+                                          <svg class="w-12 h-12 text-teal-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Carousel Controls -->
+                    <button id="prevBtn" class="carousel-btn absolute top-1/2 left-2 transform -translate-y-1/2 text-white p-2 rounded-full">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <button id="nextBtn" class="carousel-btn absolute top-1/2 right-2 transform -translate-y-1/2 text-white p-2 rounded-full">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Featured This Week -->
+            <section class="mb-12 text-center fade-in-up" style="animation-delay: 0.2s;">
+                  <span class="text-xs font-semibold tracking-wider uppercase featured-highlight">Featured This Week</span>
+                <div class="mt-4 card max-w-4xl mx-auto p-8 rounded-lg flex flex-col md:flex-row items-center gap-8 text-left">
+                     <div class="md:w-1/3 flex justify-center">
+                        <div class="w-40 h-56 bg-red-500 rounded-lg flex items-center justify-center shadow-2xl book-card">
+                              <svg class="w-16 h-16 text-red-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-12v4m-2-2h4m5 6v4m-2-2h4M17 3h-4a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2V5a2 2 0 00-2-2zm-5 14H7a2 2 0 01-2-2v-4a2 2 0 012-2h5a2 2 0 012 2v4a2 2 0 01-2 2z"></path></svg>
+                        </div>
+                    </div>
+                    <div class="md:w-2/3">
+                        <h1 class="text-3xl md:text-4xl font-bold text-main">Project Hail Mary</h1>
+                        <p class="text-sm text-subtle mt-1">by Andy Weir</p>
+                        <p class="mt-3 max-w-2xl text-sm text-subtle">A lone astronaut. An impossible mission. An ally he never imagined. The fate of humanity rests on his shoulders.</p>
+                          <div class="mt-6 flex space-x-3">
+                            <button class="btn-primary text-white text-xs font-semibold px-5 py-2 rounded-md">Read Reviews</button>
+                            <button class="btn-secondary text-xs font-semibold px-5 py-2 rounded-md">Add to List</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            
+            <!-- Most Popular & Top 10 -->
+            <section class="fade-in-up" style="animation-delay: 0.4s;">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Most Popular -->
+                    <div>
+                        <h3 class="text-lg font-bold text-main mb-4 text-center featured-highlight">Most Popular</h3>
+                        <div class="space-y-3">
+                            <div class="card p-3 rounded-lg flex items-center gap-4 book-card">
+                                <span class="text-subtle font-bold text-sm">1</span>
+                                <div class="w-10 h-14 bg-green-500 rounded-md flex-shrink-0"></div>
+                                <div class="flex-grow">
+                                    <h5 class="font-semibold text-main text-xs">The Seven Husbands of Evelyn Hugo</h5>
+                                </div>
+                            </div>
+                            <div class="card p-3 rounded-lg flex items-center gap-4 book-card">
+                                <span class="text-subtle font-bold text-sm">2</span>
+                                <div class="w-10 h-14 bg-indigo-500 rounded-md flex-shrink-0"></div>
+                                <div class="flex-grow">
+                                    <h5 class="font-semibold text-main text-xs">The Midnight Library</h5>
+                                </div>
+                            </div>
+                             <div class="card p-3 rounded-lg flex items-center gap-4 book-card">
+                                <span class="text-subtle font-bold text-sm">3</span>
+                                <div class="w-10 h-14 bg-teal-500 rounded-md flex-shrink-0"></div>
+                                <div class="flex-grow">
+                                    <h5 class="font-semibold text-main text-xs">Where the Crawdads Sing</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top 10 This Month -->
+                    <div>
+                        <h3 class="text-lg font-bold text-main mb-4 text-center featured-highlight">Top 10 This Month</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="card p-3 rounded-lg text-center book-card">
+                                <div class="w-16 h-24 bg-green-500 rounded-md mx-auto mb-2"></div>
+                                <h5 class="font-semibold text-main text-xs">The Seven Husbands...</h5>
+                            </div>
+                            <div class="card p-3 rounded-lg text-center book-card">
+                                <div class="w-16 h-24 bg-indigo-500 rounded-md mx-auto mb-2"></div>
+                                <h5 class="font-semibold text-main text-xs">The Midnight Library</h5>
+                            </div>
+                            <div class="card p-3 rounded-lg text-center book-card">
+                                <div class="w-16 h-24 bg-teal-500 rounded-md mx-auto mb-2"></div>
+                                <h5 class="font-semibold text-main text-xs">Crawdads Sing</h5>
+                            </div>
+                            <div class="card p-3 rounded-lg text-center book-card">
+                                <div class="w-16 h-24 bg-red-500 rounded-md mx-auto mb-2"></div>
+                                <h5 class="font-semibold text-main text-xs">Project Hail Mary</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer id="contact" class="header mt-12 py-8">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-subtle">
+                <h3 class="text-lg font-semibold text-main">Contact Us</h3>
+                <p class="mt-2 text-xs">Have questions? We'd love to hear from you.</p>
+                <p class="mt-1 text-xs">support@bookdb.example.com</p>
+                <div class="flex justify-center space-x-4 mt-4">
+                    <a href="#" class="hover:text-main">Twitter</a>
+                    <a href="#" class="hover:text-main">Facebook</a>
+                    <a href="#" class="hover:text-main">Instagram</a>
+                </div>
+                <p class="mt-6 text-xs">&copy; 2024 BookDB. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // SPLASH SCREEN SCRIPT
+        window.addEventListener('load', () => {
+            const splash = document.getElementById('splash-screen');
+            const mainContent = document.getElementById('main-content');
+
+            // Check if the splash screen has been shown in this session
+            if (sessionStorage.getItem('splashScreenShown')) {
+                // If it has, hide splash screen immediately and show content
+                if(splash) splash.style.display = 'none';
+                if(mainContent) mainContent.style.opacity = '1';
+            } else {
+                // If it hasn't, run the animation
+                setTimeout(() => {
+                    if(splash) splash.style.opacity = '0';
+                    if(mainContent) mainContent.style.opacity = '1';
+
+                    // After the fade out, hide the splash screen and set the session flag
+                    setTimeout(() => {
+                        if(splash) splash.style.display = 'none';
+                        sessionStorage.setItem('splashScreenShown', 'true');
+                    }, 500); // Match transition duration
+                }, 3500); // 3.5 seconds
+            }
+        });
+
+
+        // THEME TOGGLE SCRIPT
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        if(themeToggleBtn) {
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                if(themeToggleLightIcon) themeToggleLightIcon.classList.remove('hidden');
+            } else {
+                if(themeToggleDarkIcon) themeToggleDarkIcon.classList.remove('hidden');
+            }
+
+            themeToggleBtn.addEventListener('click', function() {
+                if(themeToggleDarkIcon) themeToggleDarkIcon.classList.toggle('hidden');
+                if(themeToggleLightIcon) themeToggleLightIcon.classList.toggle('hidden');
+                if (localStorage.getItem('color-theme')) {
+                    if (localStorage.getItem('color-theme') === 'light') {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                } else {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    }
+                }
+            });
+        }
+
+        // CAROUSEL SCRIPT
+        const carousel = document.getElementById('carousel');
+        if (carousel) {
+            const items = carousel.querySelectorAll('.carousel-item');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            let currentIndex = 0;
+
+            function showItem(index) {
+                items.forEach((item, i) => {
+                    item.classList.remove('active');
+                    if (i === index) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+            if(items.length > 0) {
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % items.length;
+                    showItem(currentIndex);
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + items.length) % items.length;
+                    showItem(currentIndex);
+                });
+                
+                setInterval(() => {
+                    nextBtn.click();
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>

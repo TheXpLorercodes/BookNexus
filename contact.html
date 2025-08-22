@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookDB - Contact Us</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           General Styles (Used on ALL pages)
+           ========================================================================== */
+
+        /* General Body and Font Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            color: #a0aec0;
+        }
+
+        /* Card Styles (Used for almost all content blocks) */
+        .card {
+            background-color: #2d3748;
+            border: 1px solid #4a5568;
+        }
+
+        /* Text and Highlight Styles */
+        .featured-highlight {
+            color: #63b3ed;
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background-color: #4299e1;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #3182ce;
+        }
+        .btn-secondary {
+            background-color: #4a5568;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #2d3748;
+        }
+
+        /* General Page Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        /* Card Animations & Hover Effects (Used on book/author cards) */
+        .book-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+
+    <script>
+        // This script is for the dark/light mode toggle if you decide to re-add it.
+        // For now, it defaults to the dark theme styles defined in the CSS.
+    </script>
+</head>
+<body class="text-sm">
+
+    <!-- Header -->
+    <header class="bg-[#161a24] shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-white text-lg font-bold flex items-center gap-2">
+                        <svg class="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18"></path></svg>
+                        <span class="text-white font-semibold text-base">BookDB</span>
+                    </a>
+                    <div class="hidden md:flex items-center space-x-3 pl-4">
+                        <a href="allbooks.html" class="text-gray-300 hover:text-white px-2 py-1 rounded-md text-xs font-medium">All Books</a>
+                        <a href="community.html" class="text-gray-300 hover:text-white px-2 py-1 rounded-md text-xs font-medium">Community</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a href="login.html?action=signin" class="text-gray-300 hover:text-white px-2 py-1 rounded-md text-xs font-medium">Sign In</a>
+                    <a href="login.html?action=signup" class="btn-primary text-white px-3 py-1 rounded-md text-xs font-medium">Sign Up</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contact Page Content -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="max-w-xl mx-auto fade-in-up">
+             <div class="text-center mb-10">
+                <h1 class="text-4xl font-bold text-white">Get In Touch</h1>
+                <p class="text-gray-400 mt-3">We'd love to hear from you. Please fill out the form below or reach out to us directly.</p>
+            </div>
+            
+            <div class="card p-8 rounded-lg">
+                <form id="contactForm">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label for="name" class="block text-xs font-medium text-white mb-1">Full Name</label>
+                            <input type="text" name="name" id="name" class="w-full bg-[#1a202c] border border-[#4a5568] rounded-md px-3 py-1.5 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-xs font-medium text-white mb-1">Email</label>
+                            <input type="email" name="email" id="email" class="w-full bg-[#1a202c] border border-[#4a5568] rounded-md px-3 py-1.5 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <label for="message" class="block text-xs font-medium text-white mb-1">Message</label>
+                        <textarea name="message" id="message" rows="4" class="w-full bg-[#1a202c] border border-[#4a5568] rounded-md px-3 py-1.5 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+                    <div class="mt-6">
+                        <button type="submit" class="w-full btn-primary text-xs font-semibold py-2.5 rounded-md">Send Message</button>
+                    </div>
+                </form>
+                <!-- Message area for success/error -->
+                <div id="form-message" class="text-center text-xs mt-4"></div>
+            </div>
+
+            <div class="text-center mt-10">
+                <h3 class="font-bold text-white">Our Contact Information</h3>
+                <p class="text-gray-400 text-xs mt-2">support@bookdb.example.com</p>
+                <p class="text-gray-400 text-xs mt-1">123 Bookworm Lane, Readington, BK 45678</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-[#161a24] mt-12 py-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <p class="text-xs">&copy; 2024 BookDB. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Internal JS for contact form -->
+    <script>
+        const contactForm = document.getElementById('contactForm');
+        const formMessage = document.getElementById('form-message');
+
+        contactForm.addEventListener('submit', function(e) {
+            // Prevent the default form submission which reloads the page
+            e.preventDefault();
+
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            // Simple validation
+            if (name.trim() === '' || email.trim() === '' || message.trim() === '') {
+                formMessage.textContent = 'Please fill out all fields.';
+                formMessage.style.color = '#F87171'; // Red color for error
+            } else {
+                formMessage.textContent = 'Thank you for your message! We will get back to you soon.';
+                formMessage.style.color = '#34D399'; // Green color for success
+                
+                // Clear the form
+                contactForm.reset();
+            }
+
+            // Hide the message after 5 seconds
+            setTimeout(() => {
+                formMessage.textContent = '';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
