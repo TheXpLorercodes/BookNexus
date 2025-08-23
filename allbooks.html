@@ -7,25 +7,70 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* CSS Variables for Theming */
+        :root {
+            --bg-primary: #f3f4f6; /* Light: A very light gray */
+            --bg-secondary: #FFFFFF; /* Light: white */
+            --bg-header: #FFFFFF;
+            --text-primary: #1F2937; /* Light: gray-800 */
+            --text-secondary: #6B7280; /* Light: gray-500 */
+            --border-color: #E5E7EB; /* Light: gray-200 */
+            --highlight-color: #3B82F6; /* Light: blue-500 */
+            --btn-primary-bg: #3B82F6;
+            --btn-primary-hover-bg: #2563EB;
+            --btn-secondary-bg: #E5E7EB;
+            --btn-secondary-hover-bg: #D1D5DB;
+            --btn-secondary-text: #374151;
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --toggle-active-bg: #3B82F6;
+            --toggle-inactive-bg: #E5E7EB;
+            --toggle-inactive-text: #6B7280;
+        }
+
+        .dark {
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --bg-header: #161a24;
+            --text-primary: #E5E7EB; /* Dark: gray-200 */
+            --text-secondary: #a0aec0;
+            --border-color: #4a5568;
+            --highlight-color: #63b3ed;
+            --btn-primary-bg: #4299e1;
+            --btn-primary-hover-bg: #3182ce;
+            --btn-secondary-bg: #4a5568;
+            --btn-secondary-hover-bg: #2d3748;
+            --btn-secondary-text: #E5E7EB;
+            --card-shadow: none;
+            --toggle-active-bg: #4299e1;
+            --toggle-inactive-bg: #2d3748;
+            --toggle-inactive-text: #a0aec0;
+        }
+
+        /* Applying Variables */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a202c;
-            color: #a0aec0;
+            background-color: var(--bg-primary);
+            color: var(--text-secondary);
+            transition: background-color 0.3s, color 0.3s;
         }
         .card {
-            background-color: #2d3748;
-            border: 1px solid #4a5568;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
-        .featured-highlight {
-            color: #63b3ed;
+        .header {
+            background-color: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
         }
+        .text-main { color: var(--text-primary); }
+        .text-subtle { color: var(--text-secondary); }
         .btn-primary {
-            background-color: #4299e1;
+            background-color: var(--btn-primary-bg);
+            color: white;
             transition: background-color 0.3s ease;
         }
-        .btn-primary:hover {
-            background-color: #3182ce;
-        }
+        .btn-primary:hover { background-color: var(--btn-primary-hover-bg); }
         .book-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -34,34 +79,47 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
         .view-toggle-active {
-            background-color: #4299e1;
+            background-color: var(--toggle-active-bg);
             color: white;
         }
         .view-toggle-inactive {
-            background-color: #2d3748;
-            color: #a0aec0;
+            background-color: var(--toggle-inactive-bg);
+            color: var(--toggle-inactive-text);
         }
     </style>
+    <script>
+        // This script must be in the <head> to prevent a flash of unstyled content (FOUC).
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 </head>
 <body class="text-sm">
 
     <!-- Header -->
-    <header class="bg-[#161a24] shadow-md sticky top-0 z-50">
+    <header class="header shadow-md sticky top-0 z-50">
         <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-14">
                 <div class="flex items-center space-x-4">
-                    <a href="index.html" class="text-white text-lg font-bold flex items-center gap-2">
-                        <svg class="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18"></path></svg>
-                        <span class="text-white font-semibold text-base">BookDB</span>
+                    <a href="index.html" class="text-lg font-bold flex items-center gap-2 text-main">
+                        <svg class="w-7 h-7 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18"></path></svg>
+                        <span class="font-semibold text-base">BookDB</span>
                     </a>
                     <div class="hidden md:flex items-center space-x-3 pl-4">
-                        <a href="contact.html" class="text-gray-300 hover:text-white px-2 py-1 rounded-md text-xs font-medium">Contact</a>
-                        <a href="community.html" class="text-gray-300 hover:text-white px-2 py-1 rounded-md text-xs font-medium">Community</a>
+                        <a href="#" class="text-main font-bold px-2 py-1 rounded-md text-xs">All Books</a>
+                        <a href="contact.html" class="text-subtle hover:text-main px-2 py-1 rounded-md text-xs font-medium">Contact</a>
+                        <a href="community.html" class="text-subtle hover:text-main px-2 py-1 rounded-md text-xs font-medium">Community</a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <a href="login.html?action=signin" class="text-gray-300 hover:text-white px-2 py-1 rounded-md text-xs font-medium">Sign In</a>
-                    <a href="login.html?action=signup" class="btn-primary text-white px-3 py-1 rounded-md text-xs font-medium">Sign Up</a>
+                    <button id="theme-toggle" type="button" class="text-subtle hover:text-main p-1.5 rounded-md">
+                        <svg id="theme-toggle-dark-icon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1z"></path></svg>
+                    </button>
+                    <a href="login.html?action=signin" class="text-subtle hover:text-main px-2 py-1 rounded-md text-xs font-medium">Sign In</a>
+                    <a href="login.html?action=signup" class="btn-primary px-3 py-1 rounded-md text-xs font-medium">Sign Up</a>
                 </div>
             </div>
         </nav>
@@ -70,18 +128,15 @@
     <!-- All Books Page Content -->
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4">
-            <h1 class="text-3xl font-bold text-white">All Books</h1>
+            <h1 class="text-3xl font-bold text-main">All Books</h1>
             <div class="flex items-center gap-2 md:gap-4">
                 <!-- Filters -->
-                <select class="bg-[#2d3748] text-white text-xs rounded-md px-3 py-1.5 border border-[#4a5568] focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select class="card text-subtle text-xs rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option>All Genres</option>
                     <option>Science Fiction</option>
                     <option>Fantasy</option>
-                    <option>Mystery</option>
-                    <option>Thriller</option>
-                    <option>Romance</option>
                 </select>
-                <select class="bg-[#2d3748] text-white text-xs rounded-md px-3 py-1.5 border border-[#4a5568] focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select class="card text-subtle text-xs rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option>All Categories</option>
                     <option>Fiction</option>
                     <option>Non-Fiction</option>
@@ -94,19 +149,58 @@
             </div>
         </div>
         
-        <!-- Books Display Area -->
         <div id="books-display-area">
-            <!-- This will be populated by JS -->
+            <!-- Populated by JS -->
         </div>
     </main>
 
-    <footer class="bg-[#161a24] mt-12 py-8">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+    <footer class="header mt-12 py-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-subtle">
             <p class="mt-6 text-xs">&copy; 2024 BookDB. All Rights Reserved.</p>
         </div>
     </footer>
 
     <script>
+        // THEME TOGGLE SCRIPT
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        if(themeToggleBtn) {
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                if(themeToggleLightIcon) themeToggleLightIcon.classList.remove('hidden');
+            } else {
+                if(themeToggleDarkIcon) themeToggleDarkIcon.classList.remove('hidden');
+            }
+
+            themeToggleBtn.addEventListener('click', function() {
+                if(themeToggleDarkIcon) themeToggleDarkIcon.classList.toggle('hidden');
+                if(themeToggleLightIcon) themeToggleLightIcon.classList.toggle('hidden');
+                if (localStorage.getItem('color-theme')) {
+                    if (localStorage.getItem('color-theme') === 'light') {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                } else {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    }
+                }
+            });
+        }
+        
+        // ALL BOOKS PAGE SCRIPT
+        const displayArea = document.getElementById('books-display-area');
+        const gridViewBtn = document.getElementById('gridViewBtn');
+        const carouselViewBtn = document.getElementById('carouselViewBtn');
+
         // Mock Data
         const books = [
             { title: 'The Seven Husbands...', color: 'bg-green-500', genre: 'Romance', category: 'Fiction' },
@@ -118,42 +212,33 @@
             { title: 'The Hobbit', color: 'bg-lime-500', genre: 'Fantasy', category: 'Fiction' },
             { title: 'Gone Girl', color: 'bg-rose-500', genre: 'Thriller', category: 'Fiction' },
         ];
-
         const authors = [
             { name: 'Taylor Jenkins Reid', image: 'bg-gray-500' },
             { name: 'Matt Haig', image: 'bg-gray-600' },
             { name: 'Delia Owens', image: 'bg-gray-700' },
             { name: 'Andy Weir', image: 'bg-gray-800' },
-            { name: 'Tara Westover', image: 'bg-gray-500' },
-            { name: 'J.R.R. Tolkien', image: 'bg-gray-600' },
-            { name: 'Frank Herbert', image: 'bg-gray-700' },
-            { name: 'Gillian Flynn', image: 'bg-gray-800' },
         ];
-
-        const displayArea = document.getElementById('books-display-area');
-        const gridViewBtn = document.getElementById('gridViewBtn');
-        const carouselViewBtn = document.getElementById('carouselViewBtn');
 
         const renderGridView = () => {
             displayArea.innerHTML = `
                 <section class="mb-12">
-                    <h2 class="text-xl font-bold text-white mb-4">Top 10 Books</h2>
+                    <h2 class="text-xl font-bold text-main mb-4">Top Books</h2>
                     <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                         ${books.slice(0, 5).map(book => `
                             <div class="book-card card rounded-lg p-3 text-center">
                                 <div class="w-full h-48 ${book.color} rounded-md mx-auto mb-2"></div>
-                                <h5 class="font-semibold text-white text-xs">${book.title}</h5>
+                                <h5 class="font-semibold text-main text-xs">${book.title}</h5>
                             </div>
                         `).join('')}
                     </div>
                 </section>
                 <section class="mb-12">
-                    <h2 class="text-xl font-bold text-white mb-4">Top 10 Authors</h2>
-                    <div class="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-4">
-                         ${authors.slice(0, 5).map(author => `
+                    <h2 class="text-xl font-bold text-main mb-4">Top Authors</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                         ${authors.map(author => `
                             <div class="text-center book-card">
                                 <div class="w-24 h-24 ${author.image} rounded-full mx-auto mb-2"></div>
-                                <h5 class="font-semibold text-white text-xs">${author.name}</h5>
+                                <h5 class="font-semibold text-main text-xs">${author.name}</h5>
                             </div>
                         `).join('')}
                     </div>
@@ -164,26 +249,26 @@
         const renderCarouselView = () => {
             displayArea.innerHTML = `
                 <section class="mb-12">
-                    <h2 class="text-xl font-bold text-white mb-4">Science Fiction</h2>
+                    <h2 class="text-xl font-bold text-main mb-4">Science Fiction</h2>
                     <div class="relative">
                         <div class="flex gap-4 overflow-x-auto pb-4">
                            ${books.filter(b => b.genre === 'Science Fiction').map(book => `
                                 <div class="flex-shrink-0 w-40 book-card card rounded-lg p-3 text-center">
                                     <div class="w-full h-48 ${book.color} rounded-md mx-auto mb-2"></div>
-                                    <h5 class="font-semibold text-white text-xs">${book.title}</h5>
+                                    <h5 class="font-semibold text-main text-xs">${book.title}</h5>
                                 </div>
                             `).join('')}
                         </div>
                     </div>
                 </section>
                 <section class="mb-12">
-                    <h2 class="text-xl font-bold text-white mb-4">Fantasy</h2>
+                    <h2 class="text-xl font-bold text-main mb-4">Fantasy</h2>
                     <div class="relative">
                         <div class="flex gap-4 overflow-x-auto pb-4">
                            ${books.filter(b => b.genre === 'Fantasy').map(book => `
                                 <div class="flex-shrink-0 w-40 book-card card rounded-lg p-3 text-center">
                                     <div class="w-full h-48 ${book.color} rounded-md mx-auto mb-2"></div>
-                                    <h5 class="font-semibold text-white text-xs">${book.title}</h5>
+                                    <h5 class="font-semibold text-main text-xs">${book.title}</h5>
                                 </div>
                             `).join('')}
                         </div>
@@ -192,17 +277,19 @@
             `;
         };
 
-        gridViewBtn.addEventListener('click', () => {
-            renderGridView();
-            gridViewBtn.classList.replace('view-toggle-inactive', 'view-toggle-active');
-            carouselViewBtn.classList.replace('view-toggle-active', 'view-toggle-inactive');
-        });
+        if(gridViewBtn && carouselViewBtn) {
+            gridViewBtn.addEventListener('click', () => {
+                renderGridView();
+                gridViewBtn.classList.replace('view-toggle-inactive', 'view-toggle-active');
+                carouselViewBtn.classList.replace('view-toggle-active', 'view-toggle-inactive');
+            });
 
-        carouselViewBtn.addEventListener('click', () => {
-            renderCarouselView();
-            carouselViewBtn.classList.replace('view-toggle-inactive', 'view-toggle-active');
-            gridViewBtn.classList.replace('view-toggle-active', 'view-toggle-inactive');
-        });
+            carouselViewBtn.addEventListener('click', () => {
+                renderCarouselView();
+                carouselViewBtn.classList.replace('view-toggle-inactive', 'view-toggle-active');
+                gridViewBtn.classList.replace('view-toggle-active', 'view-toggle-inactive');
+            });
+        }
 
         // Initial render
         renderGridView();
