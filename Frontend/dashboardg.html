@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Athenaeum - Your Next Great Read</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f9fafb;
+            --text: #111827;
+            --text-subtle: #6b7280;
+            --accent-start: #4f46e5;
+            --accent-end: #ec4899;
+            --border: #e5e7eb;
+            --card-bg: rgba(255, 255, 255, 0.6);
+            --blur: 12px;
+        }
+        .dark {
+            --bg: #0a0a0f;
+            --text: #e4e4e7;
+            --text-subtle: #8b949e;
+            --accent-start: #f472b6;
+            --accent-end: #60a5fa;
+            --border: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(20, 20, 30, 0.5);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-subtle);
+            overflow-x: hidden;
+            background: linear-gradient(240deg, #e0e7ff, #f9fafb 40%, #f3e8ff 100%);
+            background-size: 400% 400%;
+            animation: gradientAnimation 20s ease infinite;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .dark body {
+            background: linear-gradient(240deg, #010409, #0a0a0f 40%, #1a1a2e 100%);
+        }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animated Retro Font */
+        .font-retro {
+            font-family: 'Press Start 2P', cursive;
+            animation: text-flicker 3s linear infinite;
+        }
+        @keyframes text-flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 5px var(--accent-start), 0 0 10px var(--accent-start), 0 0 15px var(--accent-end);
+                color: var(--text);
+            }
+            20%, 24%, 55% {       
+                text-shadow: none;
+                color: var(--text-subtle);
+            }
+        }
+        .dark .font-retro {
+             animation: text-flicker-dark 3s linear infinite;
+        }
+         @keyframes text-flicker-dark {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 5px var(--accent-start), 0 0 10px var(--accent-start), 0 0 20px var(--accent-start), 0 0 40px var(--accent-end), 0 0 80px var(--accent-end);
+                color: var(--text);
+            }
+            20%, 24%, 55% {       
+                text-shadow: none;
+                color: var(--text-subtle);
+            }
+        }
+
+        /* Glassmorphism */
+        .glass-card {
+            background-color: var(--card-bg);
+            backdrop-filter: blur(var(--blur));
+            -webkit-backdrop-filter: blur(var(--blur));
+            border: 1px solid var(--border);
+            transition: background-color 0.5s ease, border-color 0.5s ease;
+        }
+        .glass-header {
+            background-color: var(--card-bg);
+            backdrop-filter: blur(var(--blur));
+            -webkit-backdrop-filter: blur(var(--blur));
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Full-width Floating Navbar */
+        #main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+        }
+        
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 120%;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Blended Edges */
+        .blended-search {
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        }
+
+        /* Carousel Styles */
+        .carousel-container {
+            position: relative;
+        }
+        .carousel-slide {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .carousel-slide.active {
+            display: flex;
+            opacity: 1;
+        }
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0,0,0,0.3);
+            border-radius: 50%;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .carousel-arrow:hover {
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        /* Floating Drop-up Footer */
+        .floating-footer-btn {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+        }
+        .dropup-content {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) scale(0.95) translateY(10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 0.75rem;
+        }
+        .dropup-content.show {
+            transform: translateX(-50%) scale(1) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 3D Hover for Cards */
+        .card-3d-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-3d-hover:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+    </style>
+    <script>
+        // Theme checking script
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+<body class="text-xs antialiased">
+
+    <!-- Header -->
+    <header id="main-header" class="glass-header sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-lg font-bold flex items-center gap-2">
+                        <svg class="w-6 h-6 text-[var(--accent-start)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18"></path></svg>
+                        <span class="font-retro text-sm text-[var(--text)]">The Athenaeum</span>
+                    </a>
+                </div>
+                <div class="flex-grow flex items-center justify-center space-x-2">
+                    <a href="allbooks.html" class="hover:text-[var(--text)] px-3 py-2 rounded-md text-xs font-medium">All Books</a>
+                    <a href="#" class="hover:text-[var(--text)] px-3 py-2 rounded-md text-xs font-medium">My Library</a>
+                    <a href="contact.html" class="hover:text-[var(--text)] px-3 py-2 rounded-md text-xs font-medium">Contact</a>
+                    <a href="community.html" class="hover:text-[var(--text)] px-3 py-2 rounded-md text-xs font-medium">Community</a>
+                </div>
+                <div class="flex-shrink-0 flex items-center space-x-3">
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-black/10 dark:hover:bg-white/10 text-[var(--text-subtle)]">
+                        <svg id="theme-icon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                    </button>
+                    <!-- Avatar Dropdown -->
+                    <div class="dropdown">
+                        <button id="avatar-btn" class="w-8 h-8 rounded-full bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--card-bg)] focus:ring-[var(--accent-end)]"></button>
+                        <div id="avatar-menu" class="dropdown-menu glass-card rounded-lg p-2 w-48 text-left">
+                            <a href="#" class="block px-3 py-1.5 hover:bg-black/10 dark:hover:bg-white/10 rounded-md">Profile</a>
+                            <a href="#" class="block px-3 py-1.5 hover:bg-black/10 dark:hover:bg-white/10 rounded-md">Settings</a>
+                            <div class="border-t border-[var(--border)] my-1"></div>
+                            <a href="index.html" class="block px-3 py-1.5 hover:bg-black/10 dark:hover:bg-white/10 rounded-md">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Search Bar -->
+        <section class="container mx-auto px-4 sm:px-6 lg:px-8 my-8 flex justify-center">
+            <div class="relative w-full max-w-2xl blended-search">
+                <input type="text" placeholder="Search for your next adventure..." class="w-full glass-card border-0 rounded-full py-3 pl-5 pr-12 text-sm text-[var(--text)] placeholder-[var(--text-subtle)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-end)]">
+                <svg class="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-[var(--accent-start)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+        </section>
+
+        <!-- Carousel -->
+        <section class="mb-16 w-full carousel-container">
+            <div class="w-full max-w-4xl mx-auto relative">
+                <!-- Slide 1 -->
+                <div class="carousel-slide active glass-card rounded-lg p-8 items-center gap-8">
+                    <div class="w-48 h-64 bg-indigo-500 rounded-lg flex-shrink-0"></div>
+                    <div class="text-left">
+                        <h2 class="text-2xl font-bold text-[var(--text)]">The Midnight Library</h2>
+                        <p class="mt-2 text-xs">A novel about second chances and the choices that make a life. Between life and death there is a library, and within that library, the shelves go on forever.</p>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-slide glass-card rounded-lg p-8 items-center gap-8">
+                    <div class="w-48 h-64 bg-teal-500 rounded-lg flex-shrink-0"></div>
+                    <div class="text-left">
+                        <h2 class="text-2xl font-bold text-[var(--text)]">Where the Crawdads Sing</h2>
+                        <p class="mt-2 text-xs">A haunting tale of survival, a coming-of-age story, and a murder mystery that unfolds in the marshes of North Carolina.</p>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-slide glass-card rounded-lg p-8 items-center gap-8">
+                    <div class="w-48 h-64 bg-red-500 rounded-lg flex-shrink-0"></div>
+                    <div class="text-left">
+                        <h2 class="text-2xl font-bold text-[var(--text)]">Project Hail Mary</h2>
+                        <p class="mt-2 text-xs">An interstellar quest to save humanity from extinction, from the author of "The Martian."</p>
+                    </div>
+                </div>
+
+                <!-- Arrows -->
+                <button id="prev-btn" class="carousel-arrow left-0 -ml-12 text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                </button>
+                <button id="next-btn" class="carousel-arrow right-0 -mr-12 text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                </button>
+            </div>
+        </section>
+        
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- New Features Section -->
+            <section class="mb-12">
+                <h2 class="font-retro text-sm text-[var(--text)] mb-4 text-center">Features</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Feature Card 1 -->
+                    <div class="glass-card p-6 rounded-lg text-center card-3d-hover">
+                        <svg class="w-8 h-8 mx-auto mb-3 text-[var(--accent-start)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m12.728 0l-.707.707M12 21V10m0 0a2 2 0 100-4 2 2 0 000 4z" /></svg>
+                        <h3 class="font-bold text-sm text-[var(--text)]">AI Recommendations</h3>
+                        <p class="text-xs mt-1">Discover books tailored to your unique taste.</p>
+                    </div>
+                    <!-- Feature Card 2 -->
+                    <div class="glass-card p-6 rounded-lg text-center card-3d-hover">
+                         <svg class="w-8 h-8 mx-auto mb-3 text-[var(--accent-start)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                        <h3 class="font-bold text-sm text-[var(--text)]">Community Picks</h3>
+                        <p class="text-xs mt-1">See what fellow book lovers are reading and recommending.</p>
+                    </div>
+                    <!-- Feature Card 3 -->
+                    <div class="glass-card p-6 rounded-lg text-center card-3d-hover">
+                        <svg class="w-8 h-8 mx-auto mb-3 text-[var(--accent-start)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
+                        <h3 class="font-bold text-sm text-[var(--text)]">Reading Lists</h3>
+                        <p class="text-xs mt-1">Organize your literary journey and track your progress.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Most Popular & Top 10 -->
+            <section>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h2 class="font-retro text-sm text-[var(--text)] mb-4">Most Popular</h2>
+                        <div class="space-y-3">
+                            <div class="glass-card p-3 rounded-lg flex items-center gap-4 card-3d-hover">
+                                <div class="w-10 h-14 bg-green-500 rounded-md flex-shrink-0"></div>
+                                <div><h5 class="font-semibold text-xs text-[var(--text)]">The Seven Husbands...</h5></div>
+                            </div>
+                            <div class="glass-card p-3 rounded-lg flex items-center gap-4 card-3d-hover">
+                                <div class="w-10 h-14 bg-indigo-500 rounded-md flex-shrink-0"></div>
+                                <div><h5 class="font-semibold text-xs text-[var(--text)]">The Midnight Library</h5></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="font-retro text-sm text-[var(--text)] mb-4">Top 10 This Month</h2>
+                        <div class="space-y-3">
+                            <div class="glass-card p-3 rounded-lg flex items-center gap-3 card-3d-hover">
+                                <span class="text-xs font-semibold w-4 text-[var(--text)]">1.</span>
+                                <h5 class="font-semibold text-xs text-[var(--text)]">Project Hail Mary</h5>
+                            </div>
+                            <div class="glass-card p-3 rounded-lg flex items-center gap-3 card-3d-hover">
+                                <span class="text-xs font-semibold w-4 text-[var(--text)]">2.</span>
+                                <h5 class="font-semibold text-xs text-[var(--text)]">Dune</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-16 py-8 text-center">
+        <p class="text-xs">&copy; 2025 The Athenaeum. All rights reserved.</p>
+    </footer>
+
+    <!-- Floating Footer Button -->
+    <div class="floating-footer-btn">
+        <div class="dropup-container">
+            <button id="explore-btn" class="bg-white/10 dark:bg-black/20 text-[var(--text)] px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-2 glass-card">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" /></svg>
+                Explore
+            </button>
+            <div id="dropup-menu" class="dropup-content glass-card rounded-lg p-4 w-48 text-left">
+                <a href="#" class="block px-3 py-1.5 hover:bg-black/10 dark:hover:bg-white/10 rounded-md">Genres</a>
+                <a href="#" class="block px-3 py-1.5 hover:bg-black/10 dark:hover:bg-white/10 rounded-md">Categories</a>
+                <a href="#" class="block px-3 py-1.5 hover:bg-black/10 dark:hover:bg-white/10 rounded-md">Authors</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Carousel Logic
+        const slides = document.querySelectorAll('.carousel-slide');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide) => {
+                slide.classList.remove('active');
+            });
+            slides[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+        
+        // Arrow key navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        setInterval(nextSlide, 5000);
+
+        // Drop-up Menu Logic
+        const exploreBtn = document.getElementById('explore-btn');
+        const dropupMenu = document.getElementById('dropup-menu');
+
+        exploreBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            dropupMenu.classList.toggle('show');
+        });
+
+        window.addEventListener('click', () => {
+            if (dropupMenu.classList.contains('show')) {
+                dropupMenu.classList.remove('show');
+            }
+        });
+        
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const sunPath = "M12 3v1m0 16v1m8.66-12.66l-.7.7M4.04 19.96l-.7.7M21 12h-1M4 12H3m16.96-7.96l-.7.7M7.04 7.04l-.7.7M12 18a6 6 0 100-12 6 6 0 000 12z";
+        const moonPath = "M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z";
+
+        const applyTheme = (theme) => {
+            themeIcon.style.transform = 'rotate(180deg)';
+            setTimeout(() => {
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    themeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${sunPath}" />`;
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    themeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${moonPath}" />`;
+                }
+                themeIcon.style.transform = 'rotate(0deg)';
+            }, 150);
+        };
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            applyTheme('dark');
+        } else {
+            applyTheme('light');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = !document.documentElement.classList.contains('dark');
+            localStorage.setItem('color-theme', isDark ? 'dark' : 'light');
+            applyTheme(isDark ? 'dark' : 'light');
+        });
+        
+        // Avatar Dropdown
+        const avatarBtn = document.getElementById('avatar-btn');
+        const avatarMenu = document.getElementById('avatar-menu');
+
+        avatarBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            avatarMenu.classList.toggle('show');
+        });
+
+        window.addEventListener('click', () => {
+            if (avatarMenu.classList.contains('show')) {
+                avatarMenu.classList.remove('show');
+            }
+        });
+
+    </script>
+</body>
+</html>

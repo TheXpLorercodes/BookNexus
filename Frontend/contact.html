@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookDB - Contact Us</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables for Theming */
+        :root {
+            --bg-primary: #f3f4f6; /* Light: A very light gray */
+            --bg-secondary: #FFFFFF; /* Light: white */
+            --bg-header: #FFFFFF;
+            --text-primary: #1F2937; /* Light: gray-800 */
+            --text-secondary: #6B7280; /* Light: gray-500 */
+            --border-color: #E5E7EB; /* Light: gray-200 */
+            --highlight-color: #3B82F6; /* Light: blue-500 */
+            --btn-primary-bg: #3B82F6;
+            --btn-primary-hover-bg: #2563EB;
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .dark {
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --bg-header: #161a24;
+            --text-primary: #E5E7EB; /* Dark: gray-200 */
+            --text-secondary: #a0aec0;
+            --border-color: #4a5568;
+            --highlight-color: #63b3ed;
+            --btn-primary-bg: #4299e1;
+            --btn-primary-hover-bg: #3182ce;
+            --card-shadow: none;
+        }
+
+        /* Applying Variables */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-secondary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+        .header {
+            background-color: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .text-main { color: var(--text-primary); }
+        .text-subtle { color: var(--text-secondary); }
+        .btn-primary {
+            background-color: var(--btn-primary-bg);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover { background-color: var(--btn-primary-hover-bg); }
+        .form-input {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        /* Animation */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
+    </style>
+
+    <script>
+        // This script must be in the <head> to prevent a flash of unstyled content (FOUC).
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+<body class="text-sm">
+
+    <!-- Header -->
+    <header class="header shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-lg font-bold flex items-center gap-2 text-main">
+                        <svg class="w-7 h-7 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18"></path></svg>
+                        <span class="font-semibold text-base">BookDB</span>
+                    </a>
+                    <div class="hidden md:flex items-center space-x-3 pl-4">
+                        <a href="allbooks.html" class="text-subtle hover:text-main px-2 py-1 rounded-md text-xs font-medium">All Books</a>
+                        <a href="#" class="text-main font-bold px-2 py-1 rounded-md text-xs">Contact</a>
+                        <a href="community.html" class="text-subtle hover:text-main px-2 py-1 rounded-md text-xs font-medium">Community</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button id="theme-toggle" type="button" class="text-subtle hover:text-main p-1.5 rounded-md">
+                        <svg id="theme-toggle-dark-icon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1z"></path></svg>
+                    </button>
+                    <a href="login.html?action=signin" class="text-subtle hover:text-main px-2 py-1 rounded-md text-xs font-medium">Sign In</a>
+                    <a href="login.html?action=signup" class="btn-primary px-3 py-1 rounded-md text-xs font-medium">Sign Up</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contact Page Content -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="max-w-xl mx-auto fade-in-up">
+             <div class="text-center mb-10">
+                <h1 class="text-4xl font-bold text-main">Get In Touch</h1>
+                <p class="text-subtle mt-3">We'd love to hear from you. Please fill out the form below or reach out to us directly.</p>
+            </div>
+            
+            <div class="card p-8 rounded-lg">
+                <form id="contactForm">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label for="name" class="block text-xs font-medium text-subtle mb-1">Full Name</label>
+                            <input type="text" name="name" id="name" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-xs font-medium text-subtle mb-1">Email</label>
+                            <input type="email" name="email" id="email" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <label for="message" class="block text-xs font-medium text-subtle mb-1">Message</label>
+                        <textarea name="message" id="message" rows="4" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+                    <div class="mt-6">
+                        <button type="submit" class="w-full btn-primary text-xs font-semibold py-2.5 rounded-md">Send Message</button>
+                    </div>
+                </form>
+                <!-- Message area for success/error -->
+                <div id="form-message" class="text-center text-xs mt-4"></div>
+            </div>
+
+            <div class="text-center mt-10">
+                <h3 class="font-bold text-main">Our Contact Information</h3>
+                <p class="text-subtle text-xs mt-2">support@bookdb.example.com</p>
+                <p class="text-subtle text-xs mt-1">123 Bookworm Lane, Readington, BK 45678</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="header mt-12 py-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-subtle">
+            <p class="text-xs">&copy; 2024 BookDB. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // THEME TOGGLE SCRIPT
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        if(themeToggleBtn) {
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                if(themeToggleLightIcon) themeToggleLightIcon.classList.remove('hidden');
+            } else {
+                if(themeToggleDarkIcon) themeToggleDarkIcon.classList.remove('hidden');
+            }
+
+            themeToggleBtn.addEventListener('click', function() {
+                if(themeToggleDarkIcon) themeToggleDarkIcon.classList.toggle('hidden');
+                if(themeToggleLightIcon) themeToggleLightIcon.classList.toggle('hidden');
+                if (localStorage.getItem('color-theme')) {
+                    if (localStorage.getItem('color-theme') === 'light') {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                } else {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    }
+                }
+            });
+        }
+
+        // CONTACT FORM SCRIPT
+        const contactForm = document.getElementById('contactForm');
+        const formMessage = document.getElementById('form-message');
+
+        if(contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+
+                if (name.trim() === '' || email.trim() === '' || message.trim() === '') {
+                    formMessage.textContent = 'Please fill out all fields.';
+                    formMessage.style.color = '#F87171'; // Red color for error
+                } else {
+                    formMessage.textContent = 'Thank you for your message! We will get back to you soon.';
+                    formMessage.style.color = '#34D399'; // Green color for success
+                    contactForm.reset();
+                }
+
+                setTimeout(() => {
+                    formMessage.textContent = '';
+                }, 5000);
+            });
+        }
+    </script>
+</body>
+</html>
