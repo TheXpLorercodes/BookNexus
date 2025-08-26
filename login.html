@@ -143,25 +143,22 @@
                         <p class="text-subtle mt-2">Join our community of book lovers.</p>
                     </div>
                     <div class="card p-8 rounded-lg">
-                        <form>
+                        <form id="signUpForm">
                             <div class="mb-4">
-                                <label for="signup-name" class="block text-xs font-medium text-subtle mb-1">Full Name</label>
-                                <input type="text" id="signup-name" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <label for="signup-username" class="block text-xs font-medium text-subtle mb-1">Username</label>
+                                <input type="text" id="signup-username" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                             </div>
                             <div class="mb-4">
                                 <label for="signup-email" class="block text-xs font-medium text-subtle mb-1">Email</label>
-                                <input type="email" id="signup-email" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <input type="email" id="signup-email" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                             </div>
                             <div class="mb-4">
                                 <label for="signup-password" class="block text-xs font-medium text-subtle mb-1">Password</label>
-                                <input type="password" id="signup-password" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
-                            <div class="mb-6">
-                                <label for="confirm-password" class="block text-xs font-medium text-subtle mb-1">Confirm Password</label>
-                                <input type="password" id="confirm-password" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <input type="password" id="signup-password" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                             </div>
                             <button type="submit" class="w-full btn-primary text-white text-xs font-semibold py-2 rounded-md">Create Account</button>
                         </form>
+                        <p id="signUpMessage" class="text-xs text-center mt-4"></p>
                     </div>
                     <p class="text-xs text-center mt-4 text-subtle">Already have an account? <a href="#" id="showSignIn" class="text-blue-400 hover:underline">Sign In</a></p>
                 </div>
@@ -173,17 +170,18 @@
                         <p class="text-subtle mt-2">Sign in to continue.</p>
                     </div>
                     <div class="card p-8 rounded-lg">
-                        <form>
+                        <form id="signInForm">
                             <div class="mb-4">
-                                <label for="email" class="block text-xs font-medium text-subtle mb-1">Email</label>
-                                <input type="email" id="email" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <label for="signin-username" class="block text-xs font-medium text-subtle mb-1">Username</label>
+                                <input type="text" id="signin-username" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                             </div>
                             <div class="mb-6">
-                                <label for="password" class="block text-xs font-medium text-subtle mb-1">Password</label>
-                                <input type="password" id="password" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <label for="signin-password" class="block text-xs font-medium text-subtle mb-1">Password</label>
+                                <input type="password" id="signin-password" class="form-input w-full rounded-md px-3 py-1.5 text-xs text-main focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                             </div>
                             <button type="submit" class="w-full btn-primary text-white text-xs font-semibold py-2 rounded-md">Sign In</button>
                         </form>
+                        <p id="signInMessage" class="text-xs text-center mt-4"></p>
                     </div>
                     <p class="text-xs text-center mt-4 text-subtle">Don't have an account? <a href="#" id="showSignUp" class="text-blue-400 hover:underline">Sign Up</a></p>
                 </div>
@@ -251,6 +249,73 @@
             e.preventDefault();
             flipper.classList.remove('is-flipped');
         });
+
+        // BACKEND CONNECTION SCRIPT
+        const signUpForm = document.getElementById('signUpForm');
+        const signInForm = document.getElementById('signInForm');
+        const signUpMessage = document.getElementById('signUpMessage');
+        const signInMessage = document.getElementById('signInMessage');
+
+        // Handle Sign Up
+        signUpForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('signup-username').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/register/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+
+                if (response.ok) {
+                    signUpMessage.textContent = 'Registration successful! Please sign in.';
+                    signUpMessage.style.color = 'green';
+                    setTimeout(() => flipper.classList.add('is-flipped'), 2000);
+                } else {
+                    const errorData = await response.json();
+                    signUpMessage.textContent = `Error: ${JSON.stringify(errorData)}`;
+                    signUpMessage.style.color = 'red';
+                }
+            } catch (error) {
+                signUpMessage.textContent = 'Network error. Is the backend server running?';
+                signUpMessage.style.color = 'red';
+            }
+        });
+
+        // Handle Sign In
+        signInForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('signin-username').value;
+            const password = document.getElementById('signin-password').value;
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/token/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('accessToken', data.access);
+                    localStorage.setItem('refreshToken', data.refresh);
+                    signInMessage.textContent = 'Sign in successful! Redirecting...';
+                    signInMessage.style.color = 'green';
+                    // Redirect to the main page after a short delay
+                    setTimeout(() => window.location.href = 'dashboardg.html', 1500);
+                } else {
+                    signInMessage.textContent = 'Invalid username or password.';
+                    signInMessage.style.color = 'red';
+                }
+            } catch (error) {
+                signInMessage.textContent = 'Network error. Is the backend server running?';
+                signInMessage.style.color = 'red';
+            }
+        });
+
     </script>
 </body>
 </html>
