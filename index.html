@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Design Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Portfolio</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#portfolio" class="nav-link">Portfolio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="title-line">Creative</span>
+                    <span class="title-line">3D Designer</span>
+                </h1>
+                <p class="hero-description">
+                    Bringing imagination to life through innovative 3D design and visual storytelling.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#portfolio" class="btn btn-primary">View Work</a>
+                    <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                </div>
+            </div>
+            <div class="hero-3d">
+                <div class="floating-cube">
+                    <div class="cube">
+                        <div class="face front"></div>
+                        <div class="face back"></div>
+                        <div class="face right"></div>
+                        <div class="face left"></div>
+                        <div class="face top"></div>
+                        <div class="face bottom"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+                <p class="section-subtitle">Passionate about creating immersive 3D experiences</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>I'm a dedicated 3D designer with a passion for creating visually stunning and conceptually rich designs. With expertise in modern 3D software and a keen eye for detail, I transform ideas into compelling visual narratives.</p>
+                    <div class="skills">
+                        <h3>Skills & Expertise</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">3D Modeling</span>
+                            <span class="skill-tag">Animation</span>
+                            <span class="skill-tag">Texturing</span>
+                            <span class="skill-tag">Lighting</span>
+                            <span class="skill-tag">Rendering</span>
+                            <span class="skill-tag">UI/UX</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-visual">
+                    <div class="skill-cube">
+                        <div class="skill-face skill-face-1"></div>
+                        <div class="skill-face skill-face-2"></div>
+                        <div class="skill-face skill-face-3"></div>
+                        <div class="skill-face skill-face-4"></div>
+                        <div class="skill-face skill-face-5"></div>
+                        <div class="skill-face skill-face-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">My Work</h2>
+                <p class="section-subtitle">A showcase of recent 3D design projects</p>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-item" data-category="modeling">
+                    <div class="portfolio-image">
+                        <div class="placeholder-3d">
+                            <div class="portfolio-cube">
+                                <div class="p-face p-front"></div>
+                                <div class="p-face p-back"></div>
+                                <div class="p-face p-right"></div>
+                                <div class="p-face p-left"></div>
+                                <div class="p-face p-top"></div>
+                                <div class="p-face p-bottom"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>Architectural Visualization</h3>
+                        <p>Modern building design with realistic lighting and materials</p>
+                        <span class="portfolio-tag">3D Modeling</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="animation">
+                    <div class="portfolio-image">
+                        <div class="placeholder-3d">
+                            <div class="portfolio-sphere"></div>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>Product Animation</h3>
+                        <p>Dynamic product showcase with smooth camera movements</p>
+                        <span class="portfolio-tag">Animation</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="design">
+                    <div class="portfolio-image">
+                        <div class="placeholder-3d">
+                            <div class="portfolio-pyramid"></div>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>Abstract Art</h3>
+                        <p>Experimental 3D art exploring form and color</p>
+                        <span class="portfolio-tag">Concept Design</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="modeling">
+                    <div class="portfolio-image">
+                        <div class="placeholder-3d">
+                            <div class="portfolio-torus"></div>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>Character Design</h3>
+                        <p>Stylized character modeling for games and animation</p>
+                        <span class="portfolio-tag">Character</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="animation">
+                    <div class="portfolio-image">
+                        <div class="placeholder-3d">
+                            <div class="portfolio-cylinder"></div>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>Motion Graphics</h3>
+                        <p>Kinetic typography and abstract motion design</p>
+                        <span class="portfolio-tag">Motion</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="design">
+                    <div class="portfolio-image">
+                        <div class="placeholder-3d">
+                            <div class="portfolio-octahedron"></div>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>Environment Design</h3>
+                        <p>Immersive 3D environments for virtual experiences</p>
+                        <span class="portfolio-tag">Environment</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">Let's create something amazing together</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <h3>Email</h3>
+                        <p>hello@3ddesigner.com</p>
+                    </div>
+                    <div class="contact-item">
+                        <h3>Phone</h3>
+                        <p>+1 (555) 123-4567</p>
+                    </div>
+                    <div class="contact-item">
+                        <h3>Location</h3>
+                        <p>New York, NY</p>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 3D Design Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
